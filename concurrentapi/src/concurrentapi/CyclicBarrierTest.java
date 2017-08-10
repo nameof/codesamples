@@ -30,7 +30,8 @@ class Task implements Runnable {
 		try {
 			System.out.println("任务" + id + "正在加载资源...");
 			cyclicBarrier.await();
-			System.out.println("任务" + id + "开始执行...");
+			System.out.println("任务" + id + "--execute!");
+			cyclicBarrier.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (BrokenBarrierException e) {
@@ -41,9 +42,16 @@ class Task implements Runnable {
 }
 
 class Dispatcher implements Runnable {
-
+	
+	private boolean isover = false;
+	
 	@Override
 	public void run() {
-		System.out.println("资源加载完毕！");
+		if(!isover) {
+			System.out.println("全部资源加载完毕！开始执行");
+		} else {
+			System.out.println("执行完毕！");
+		}
+		isover = !isover;
 	}
 }
